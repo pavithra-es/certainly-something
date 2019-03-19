@@ -69,6 +69,12 @@ export const parse = async (der) => {
     '2.5.29.32',                // certificate policies
     '2.5.29.35',                // authority key identifier
     '2.5.29.37',                // extended key usage
+    // Microsoft Cryptography Extensions
+    '1.3.6.1.4.1.311.20.2',     // ms enrollment certificate type
+    '1.3.6.1.4.1.311.21.1',     // ms certificate services ca version
+    '1.3.6.1.4.1.311.21.2',     // ms certificate servives previous certificate hash
+    '1.3.6.1.4.1.311.21.7',     // ms certificate template
+    '1.3.6.1.4.1.311.21.10',    // ms application certificate policy
   ];
 
   // get the current time zone - note that there are some time zones that this doesn't easily
@@ -335,6 +341,60 @@ export const parse = async (der) => {
     policies: cp,
   }
 
+  // get the microsoft cryptography extensions
+  let msCryptoExt = { 
+    enrollmentType: getX509Ext(x509.extensions, '1.3.6.1.4.1.311.20.2').extnValue,        // ms enrollment certificate type 
+    certservCA: getX509Ext(x509.extensions, '1.3.6.1.4.1.311.21.1').extnValue,            // ms certificate services ca version
+    certservHash: getX509Ext(x509.extensions, '1.3.6.1.4.1.311.21.2').extnValue,          // ms certificate servives previous certificate hash
+    certTemplate: getX509Ext(x509.extensions, '1.3.6.1.4.1.311.21.7').extnValue,          // ms certificate template
+    applicationPolicy: getX509Ext(x509.extensions, '1.3.6.1.4.1.311.21.10').extnValue,    // ms application certificate policy
+    required: false,
+  };
+
+  if (msCryptoExt.enrollmentType) {
+    msCryptoExt.required = true;
+    msCryptoExt.enrollmentType = {
+      oid: '1.3.6.1.4.1.311.20.2',
+      // name: msCryptoExt.enrollmentType.Name.value,
+      critical: criticalExtensions.includes('1.3.6.1.4.1.311.20.2'),
+    };
+  }
+
+  if (msCryptoExt.certservCA) {
+    msCryptoExt.required = true;
+    msCryptoExt.certservCA = {
+      oid: '1.3.6.1.4.1.311.21.1',
+      // caID: msCryptoExt.certservCA.Signing_Cert_Version_ID.value,
+      critical: criticalExtensions.includes('1.3.6.1.4.1.311.21.1'),
+    };
+  }
+
+  if (msCryptoExt.certservHash) {
+    msCryptoExt.required = true;
+    msCryptoExt.certservHash = {
+      oid: '1.3.6.1.4.1.311.21.2',
+      critical: criticalExtensions.includes('1.3.6.1.4.1.311.21.2'),
+    };
+  }
+
+  if (msCryptoExt.certTemplate) {
+    msCryptoExt.required = true;
+    msCryptoExt.certTemplate = {
+      templateID:  '1.3.6.1.4.1.311.21.7',
+      // templateMajorVersion: msCryptoExt.certTemplate.templateMajorVersion.value,
+      // templateMinorVersion: msCryptoExt.certTemplate.templateMinorVersion.value,
+      critical: criticalExtensions.includes('1.3.6.1.4.1.311.21.7'),
+    };
+  }
+
+  if (msCryptoExt.applicationPolicy) {
+    msCryptoExt.required = true;
+    msCryptoExt.applicationPolicy = {
+      oid: '1.3.6.1.4.1.311.21.10',
+      critical: criticalExtensions.includes('1.3.6.1.4.1.311.21.10'),
+    };
+  }
+
   // determine which extensions weren't supported
   let unsupportedExtensions = [];
   x509.extensions.forEach(ext => {
@@ -359,6 +419,7 @@ export const parse = async (der) => {
       scts: scts,
       sKID,
       san,
+      msCryptoExt,
     },
     files: {
       der: undefined,

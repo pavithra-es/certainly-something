@@ -371,6 +371,89 @@
             {{/each}}
           {{/if}}
 
+          {{! Microsoft Crypto Extensions}}
+          {{#if this.ext.msCryptoExt.required}}
+          <div class="panel-section-subsection">Microsoft Cryptography Extensions</div>
+          {{/if}}
+          
+          {{! MS Enrollment certificate types }}
+          {{#if this.ext.msCryptoExt.enrollmentType}}
+            <div class="panel-section-subheader">
+              <span>
+                {{#if this.ext.msCryptoExt.enrollmentType.critical}}<img class="critical" alt="critical extension" title="This extension has been marked as critical, meaning that clients must reject the certificate if they don't understand it." src="../icons/critical.svg">{{/if~}}
+                Enrollment Type
+              </span>
+            </div>
+            <div class="panel-list-item">
+              <div class="text">OID</div>   {{! 'Name' will come here }}
+              <div class="text long-hex long-hex-box">{{ this.ext.msCryptoExt.enrollmentType.oid }}</div>
+            </div>
+          {{/if}}
+
+          {{! MS Certificate services ca version }}
+          {{#if this.ext.msCryptoExt.certservCA}}
+            <div class="panel-section-subheader">
+              <span>
+                {{#if this.ext.msCryptoExt.certservCA.critical}}<img class="critical" alt="critical extension" title="This extension has been marked as critical, meaning that clients must reject the certificate if they don't understand it." src="../icons/critical.svg">{{/if~}}
+                CA Version
+              </span>
+            </div>
+            <div class="panel-list-item">
+              <div class="text">OID</div>   {{! 'CA Version ID' will come here }}
+              <div class="text long-hex long-hex-box">{{ this.ext.msCryptoExt.certservCA.oid }}</div>
+            </div>
+          {{/if}}
+
+          {{! MS Certificate servives previous certificate hash }}
+          {{#if this.ext.msCryptoExt.certservHash}}
+              <div class="panel-section-subheader">
+                <span>
+                {{#if this.ext.msCryptoExt.certservHash.critical}}<img class="critical" alt="critical extension" title="This extension has been marked as critical, meaning that clients must reject the certificate if they don't understand it." src="../icons/critical.svg">{{/if}}
+                Certificate Hash
+                </span>
+              </div>
+              <div class="panel-list-item">
+                <div class="text">OID</div>
+                <div class="text breakable">{{ this.ext.msCryptoExt.certservHash.oid }}</div>
+              </div>
+          {{/if}}
+
+          {{! MS Certificate template }}
+          {{#if this.ext.msCryptoExt.certTemplate}}
+            <div class="panel-section-subheader">
+              <span>
+                {{#if this.ext.msCryptoExt.certTemplate.critical}}<img class="critical" alt="critical extension" title="This extension has been marked as critical, meaning that clients must reject the certificate if they don't understand it." src="../icons/critical.svg">{{/if~}}
+                Certificate Template
+              </span>
+            </div>
+            <div class="panel-list-item">
+              <div class="text">Template ID</div>
+              <div class="text long-hex long-hex-box">{{ this.ext.msCryptoExt.certTemplate.templateID }}</div>
+            </div>
+            {{!-- <div class="panel-list-item">
+              <div class="text">Major Version</div>
+              <div class="text long-hex long-hex-box">{{ this.ext.msCryptoExt.certTemplate.templateMajorVersion }}</div>
+            </div>
+            <div class="panel-list-item">
+              <div class="text">Minor Version</div>
+              <div class="text long-hex long-hex-box">{{ this.ext.msCryptoExt.certTemplate.templateMinorVersion }}</div>
+            </div> --}}
+          {{/if}}
+
+          {{! MS Application certificate policy }}
+          {{#if this.ext.msCryptoExt.applicationPolicy}}
+            <div class="panel-section-subheader">
+              <span>
+                {{#if this.ext.msCryptoExt.applicationPolicy.critical}}<img class="critical" alt="critical extension" title="This extension has been marked as critical, meaning that clients must reject the certificate if they don't understand it." src="../icons/critical.svg">{{/if~}}
+                Application Policy
+              </span>
+            </div>
+            <div class="panel-list-item">
+              <div class="text">OID</div>
+              <div class="text breakable">{{ this.ext.msCryptoExt.applicationPolicy.oid }}</div>
+            </div>
+          {{/if}}
+
           {{! Unsupported extensions }}
           {{#if (truthy this.unsupportedExtensions)}}
             <div class="panel-section-subheader">
