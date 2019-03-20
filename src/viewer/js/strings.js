@@ -53,31 +53,31 @@ export const strings = {
     // Microsoft Cryptography Extensions
     '1.3.6.1.4.1.311.20.2': {
       name: {
-          short:'Enroll CertType',
+          short:'Enrollment Type',
           long:'Microsoft Enrollment Certificate Type',
       }
     },
     '1.3.6.1.4.1.311.21.1': {
       name: {
-          short:'CertServ CA',
+          short:'CA Version',
           long:'Microsoft Certificate Services CA Version',
       }
     },
     '1.3.6.1.4.1.311.21.2': {
       name: {
-          short:'CertServ Hash',
+          short:'Certificate Hash',
           long:'Microsoft Certificate Servives Previous Certificate Hash',
       }
     },
     '1.3.6.1.4.1.311.21.7': {
       name: {
-          short:'CertType Template',
+          short:'Certificate Template',
           long:'Microsoft Certificate Template',
       }
     },
     '1.3.6.1.4.1.311.21.10': {
       name: {
-          short:'AppCert Policy',
+          short:'Application Policy',
           long:'Microsoft Application Certificate Policy',
       }
     },
